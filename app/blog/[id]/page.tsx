@@ -1,4 +1,4 @@
-import { Metadata } from "next"
+import { Metadata } from "next";
 
 type PropsPost = {
     params: {
@@ -6,16 +6,38 @@ type PropsPost = {
     }
 }
 
+const getData = async (id: string) => {
+    const responce = await fetch(`https://jsonplaceholder.typicode.com/posts/${id}`, {
+      next: {
+        //Возможность кеширования данных на 60 секундр, и повторный запрос
+        revalidate: 60
+      }
+    });
+  
+    return responce.json();
+  };
+
 //Динамические метаданные
 export async function generateMetadata({params: {id}}: PropsPost): Promise<Metadata> {
+    const post = await getData(id);
+
     return {
-        title: id
+        //Динамическое название страницы
+        title: post.title,
     }
 }
 
-const Post = ({ params: { id } }: PropsPost) => {
+const Post = async({ params: { id } }: PropsPost) => {
+    const post = await getData(id);
+
     return (
-        <div>Post {id}</div>
+        <div>
+            {post.title}
+
+            <div>
+                {post.body}
+            </div>
+        </div>
     )
 }
 
