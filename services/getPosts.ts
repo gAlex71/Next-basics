@@ -1,5 +1,5 @@
 export const getAllPosts = async () => {
-    const responce = await fetch("https://jsonplaceholder.typicode.com/posts");
+    const responce = await fetch("/api/posts");
   
     if (!responce.ok) throw new Error('Unable to fetch posts');
   
@@ -7,7 +7,7 @@ export const getAllPosts = async () => {
 };
 
 export const getPostBySearch = async (search: string) => {
-    const responce = await fetch(`https://jsonplaceholder.typicode.com/posts?q=${search}`);
+    const responce = await fetch(`/api/posts?q=${search}`);
 
     if (!responce.ok) throw new Error('Unable to fetch posts');
 
